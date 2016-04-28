@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.17.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        img {width: 300px;
+            -webkit-transform: rotate(180deg);     /* Chrome and other webkit browsers */
+            -moz-transform: rotate(180deg);        /* FF */
+            -o-transform: rotate(180deg);          /* Opera */
+            -ms-transform: rotate(180deg);         /* IE9 */
+            transform: rotate(180deg);             /* W3C compliant browsers */
+        }
+    </style>
+</head>
+
+<body>
+<div id='map'></div>
+<script>
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFubnkiLCJhIjoiMzBCNHFQUSJ9.VQQ9ZSW7viFT1yLhLiWLSA';
+
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/manny/cinghwab4000qb8m8d0a8wedn', //stylesheet location
+    center: [-121.698,45.35], // starting position
+    zoom: 12.3,
+    pitch: 90 // starting zoom
+});
+
+map.on('load', function () {
+
+    // add geojson data as a new source
+    map.addSource("symbols", {
+        "type": "geojson",
+        "data": {
+            "type": "FeatureCollection",
+            "features": [
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "01.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.696838888889,
+                  45.3725
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "02.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.696638888889,
+                  45.3726972222222
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "03.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.696638888889,
+                  45.3726972222222
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "04.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.696647222222,
+                  45.3727388888889
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "05.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.697227777778,
+                  45.3736305555556
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "06.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.697166666667,
+                  45.3736305555556
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "07.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.69725,
+                  45.3722833333333
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "08.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.698677777778,
+                  45.3689333333333
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "09.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.703138888889,
+                  45.364475
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "10.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -121.708983333333,
+                  45.330475
+                ]
+              }
+            },
+            {
+              "type": "Feature",
+              "properties": {
+                "SourceFile": "11.JPG"
+              },
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.301466666667,
+                  45.408925
+                ]
+              }
+            }
+        ]
+    }
+});
+
+// add source as a layer and apply some styles
+map.addLayer({
+    "id": "symbols",
+    "type": "symbol",
+    "source": "symbols",
+    "layout": {
+        "icon-image": "attraction-15",
+        "icon-size": 1.5
+    },
+    "paint": {}
+    });
+});
+
+var popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+
+map.on('mousemove', function(e) {
+    var features = map.queryRenderedFeatures(e.point, { layers: ['symbols'] });
+    // console.log(features);
+    // Change the cursor style as a UI indicator.
+    map.getCanvas().style.cursor = (features.length) ? 'pointer' : '';
+    if (!features.length) {
+        popup.remove();
+        return;
+    }
+    var feature = features[0];
+    // Populate the popup and set its coordinates
+    // based on the feature found.
+    popup.setLngLat(feature.geometry.coordinates)
+        // .setHTML('<img src="c.JPG"/>')
+        .setHTML('<img src= "/kruell/assets/img/' + feature.properties.SourceFile + '">')
+        .addTo(map);
+});
+</script>
+
+</body>
+</html>
